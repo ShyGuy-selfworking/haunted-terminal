@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>404: The Missing Coder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: black;
+      color: #33ff33;
+      font-family: 'Share Tech Mono', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    #terminal {
+      width: 80vw;
+      height: 80vh;
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid #33ff33;
+      padding: 1rem;
+      overflow-y: auto;
+      box-shadow: 0 0 10px #33ff33;
+    }
+    .glitch {
+      animation: glitch 1s infinite;
+    }
+    @keyframes glitch {
+      0% { text-shadow: 1px 1px red; }
+      20% { text-shadow: -1px -1px blue; }
+      40% { text-shadow: 2px -2px lime; }
+      60% { text-shadow: -2px 2px red; }
+      80% { text-shadow: 1px -1px cyan; }
+      100% { text-shadow: -1px 1px magenta; }
+    }
+    input {
+      background: black;
+      color: #33ff33;
+      border: none;
+      font-family: inherit;
+      font-size: 1rem;
+      width: 100%;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="terminal"></div>
+  <audio id="creepyAudio" src="https://cdn.pixabay.com/audio/2022/03/15/audio_f86f2a2e43.mp3" loop></audio>
+
+  <script>
+    const terminal = document.getElementById('terminal');
+    const creepyAudio = document.getElementById('creepyAudio');
+    creepyAudio.volume = 0.5;
+    creepyAudio.play();
+
+    let lines = [
+      "Initializing haunted shell...",
+      "Connecting to ShyGuy's ghost...",
+      "Loading corrupted files...",
+      "",
+      "👻 Welcome, Coder. You've entered the ghost repository.",
+      "Solve the bug to escape.",
+      "What does this corrupted function return?",
+      "function cursed() { return 666 & 'ERROR'; }",
+      "Type your answer below:"
+    ];
+
+    let index = 0;
+
+    function typeLine() {
+      if (index < lines.length) {
+        const line = document.createElement('div');
+        line.textContent = '';
+        terminal.appendChild(line);
+        let charIndex = 0;
+        const typeChar = () => {
+          if (charIndex < lines[index].length) {
+            line.textContent += lines[index][charIndex];
+            charIndex++;
+            setTimeout(typeChar, 30);
+          } else {
+            index++;
+            setTimeout(typeLine, 500);
+            if (index === lines.length - 1) addInput();
+          }
+        };
+        typeChar();
+      }
+    }
+
+    function addInput() {
+      const input = document.createElement('input');
+      terminal.appendChild(input);
+      input.focus();
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          checkAnswer(input.value);
+        }
+      });
+    }
+
+    function checkAnswer(answer) {
+      if (answer.toLowerCase().includes('error')) {
+        terminal.innerHTML += "\\n✅ You found the bug. Escape granted.\\n";
+        terminal.classList.remove('glitch');
+      } else {
+        terminal.innerHTML += "\\n❌ Wrong. The bug grows stronger...\\n";
+        terminal.classList.add('glitch');
+      }
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    typeLine();
+  </script>
+</body>
+</html>
